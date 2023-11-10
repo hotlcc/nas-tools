@@ -56,6 +56,7 @@ class TorrentTransfer(_IPluginModule):
     _deletesource = False
     _fromtorrentpath = None
     _autostart = False
+    _is_skip_checking = False
     # 退出事件
     _event = Event()
     # 待检查种子清单
@@ -240,6 +241,15 @@ class TorrentTransfer(_IPluginModule):
                             'type': 'switch',
                             'id': 'onlyonce',
                         }
+                    ],
+                    [
+                        {
+                            'title': '跳过哈希校验',
+                            'required': "",
+                            'tooltip': '打开后转移的新种会跳过哈希校验（需下载器支持），请谨慎使用',
+                            'type': 'switch',
+                            'id': 'is_skip_checking'
+                        }
                     ]
                 ]
             }
@@ -289,6 +299,7 @@ class TorrentTransfer(_IPluginModule):
             self._fromtorrentpath = config.get("fromtorrentpath")
             self._nopaths = config.get("nopaths")
             self._autostart = config.get("autostart")
+            self._is_skip_checking = config.get("is_skip_checking")
 
         # 停止现有任务
         self.stop_service()
@@ -500,6 +511,7 @@ class TorrentTransfer(_IPluginModule):
                     downloader_id=todownloader,
                     download_dir=download_dir,
                     download_setting="-2",
+                    is_skip_checking=self._is_skip_checking
                 )
                 if not download_id:
                     # 下载失败
