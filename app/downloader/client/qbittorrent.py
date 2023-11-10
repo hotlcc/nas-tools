@@ -409,7 +409,8 @@ class Qbittorrent(_IDownloadClient):
                     download_limit=None,
                     ratio_limit=None,
                     seeding_time_limit=None,
-                    cookie=None
+                    cookie=None,
+                    is_skip_checking=None
                     ):
         """
         添加种子
@@ -494,7 +495,8 @@ class Qbittorrent(_IDownloadClient):
                                             ratio_limit=ratio_limit,
                                             seeding_time_limit=seeding_time_limit,
                                             use_auto_torrent_management=is_auto,
-                                            cookie=cookie)
+                                            cookie=cookie,
+                                            is_skip_checking=is_skip_checking)
             return True if qbc_ret and str(qbc_ret).find("Ok") != -1 else False
         except Exception as err:
             log.error(f"【{self.client_name}】{self.name} 添加种子出错：{str(err)}")

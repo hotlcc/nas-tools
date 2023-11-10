@@ -265,7 +265,8 @@ class Downloader:
                  torrent_file=None,
                  in_from=None,
                  user_name=None,
-                 proxy=None):
+                 proxy=None,
+                 is_skip_checking=None):
         """
         添加下载任务，根据当前使用的下载器分别调用不同的客户端处理
         :param media_info: 需下载的媒体信息，含URL地址
@@ -465,7 +466,8 @@ class Downloader:
                                              download_limit=download_limit,
                                              ratio_limit=ratio_limit,
                                              seeding_time_limit=seeding_time_limit,
-                                             cookie=site_info.get("cookie"))
+                                             cookie=site_info.get("cookie"),
+                                             is_skip_checking=is_skip_checking)
                 if ret:
                     download_id = downloader.get_torrent_id_by_tag(torrent_tag)
             else:
