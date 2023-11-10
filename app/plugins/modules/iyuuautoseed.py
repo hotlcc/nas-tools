@@ -56,6 +56,7 @@ class IYUUAutoSeed(_IPluginModule):
     _notify = False
     _nolabels = None
     _clearcache = False
+    _is_skip_checking = False
     # 退出事件
     _event = Event()
     # 种子链接xpaths
@@ -204,6 +205,20 @@ class IYUUAutoSeed(_IPluginModule):
                         }
                     ]
                 ]
+            },
+            {
+                'type': 'div',
+                'content': [
+                    [
+                        {
+                            'title': '跳过哈希校验',
+                            'required': "",
+                            'tooltip': '打开后辅种时新种会跳过哈希校验（需下载器支持），请谨慎使用',
+                            'type': 'switch',
+                            'id': 'is_skip_checking'
+                        }
+                    ]
+                ]
             }
         ]
 
@@ -221,6 +236,7 @@ class IYUUAutoSeed(_IPluginModule):
             self._notify = config.get("notify")
             self._nolabels = config.get("nolabels")
             self._clearcache = config.get("clearcache")
+            self._is_skip_checking = config.get("is_skip_checking")
             self._permanent_error_caches = config.get("permanent_error_caches") or []
             self._error_caches = [] if self._clearcache else config.get("error_caches") or []
             self._success_caches = [] if self._clearcache else config.get("success_caches") or []
@@ -675,6 +691,7 @@ class IYUUAutoSeed(_IPluginModule):
             downloader_id=downloader,
             download_dir=save_path,
             download_setting="-2",
+            is_skip_checking=self._is_skip_checking
         )
         if not download_id:
             # 下载失败
